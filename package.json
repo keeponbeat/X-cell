@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/keeponbeat/X-cell/issues"
   },
-  "homepage": "https://github.com/keeponbeat/X-cell#readme"
+  "homepage": "https://github.com/keeponbeat/X-cell#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
 }
