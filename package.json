@@ -4,7 +4,9 @@
   "description": "this is my x-cell app!!",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "browserify client/js/app.js > public/js/bundle.js",
+    "watch": "watchify client/js/app.js -o public/js/bundle.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -18,5 +20,10 @@
   "homepage": "https://github.com/keeponbeat/X-cell#readme",
   "dependencies": {
     "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "browserify": "^15.2.0",
+    "jest": "^22.1.4",
+    "watchify": "^3.10.0"
   }
 }
