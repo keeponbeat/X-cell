@@ -8,3 +8,7 @@ th, td{
 	min-width: 100px;
 	padding: 3px;
 }
+
+.current-cell {
+	background-color: pink;
+}

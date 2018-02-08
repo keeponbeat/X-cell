@@ -2,7 +2,7 @@ const fs = require('fs');
 const TableModel = require('../table-model');
 const TableView = require('../table-view');
 
-describe('table-model', () => {
+describe('table-view', () => {
 
 	beforeEach(function(){
 		const content = fs.readFileSync('./client/js/test/fixtures/sheet-container.html', 'utf8');
@@ -50,6 +50,21 @@ describe('table-model', () => {
 			const trs = document.querySelectorAll('tbody tr');
 			expect(trs[1].cells[2].textContent).toEqual('10');
 			expect(trs[9].cells[5].textContent).toEqual('val');
+		});
+
+		it('add class when cell clicked', () => {
+			const numCols = 8;
+			const numRows = 16;
+			const model = new TableModel(numCols, numRows);
+			const view = new TableView(model);
+			view.init();
+
+			let trs = document.querySelectorAll('tbody tr');
+			expect(trs[2].cells[3].className).toBe('');
+			trs[2].cells[3].click();
+
+			trs = document.querySelectorAll('tbody tr');
+			expect(trs[2].cells[3].className).not.toBe('');
 		});
 	});
 

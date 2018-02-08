@@ -88,7 +88,9 @@ class TableView {
 
 	init() {
 		this.initDomReferences();
+		this.initCurrentCell();
 		this.renderTable();
+		this.attachEventHandlers();
 	}
 
 	initDomReferences(){
@@ -96,8 +98,12 @@ class TableView {
 		this.sheetBodyEl = document.querySelector('tbody');
 	}
 
+	initCurrentCell() {
+		this.currentCellLocation = {row:0, col:0};
+	}
+
 	renderTable(){
-		this.model.setValue({row:1, col:2}, 10);
+		//this.model.setValue({row:1, col:2}, 10);
 		this.renderTableHeader();
 		this.renderTableBody();
 	}
@@ -115,12 +121,32 @@ class TableView {
 			const tr = createTR();
 			for (let col = 0; col < this.model.numCols; col++) {
 				const td = createTD(this.model.getValue({col:col,row:row}));
+				if (this.isCurrentCell(row, col)){
+					td.className = "current-cell";
+				};
 				tr.appendChild(td);
 			}
 			fragment.appendChild(tr);
 		}
 		removeChildren(this.sheetBodyEl);
 		this.sheetBodyEl.appendChild(fragment);
+	}
+
+	isCurrentCell(row, col) {
+		return row === this.currentCellLocation.row &&
+		       col === this.currentCellLocation.col;
+	}
+
+	attachEventHandlers(){
+		this.sheetBodyEl.addEventListener('click', this.handleSheetClick.bind(this));
+	}
+
+	handleSheetClick(evt){
+		//console.log(evt);
+		const col = evt.target.cellIndex;
+		const row = evt.target.parentElement.rowIndex - 1;
+		this.currentCellLocation = {row:row, col:col};
+		this.renderTableBody();
 	}
 }
 
