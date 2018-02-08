@@ -9,6 +9,37 @@ describe('table-view', () => {
 		document.documentElement.innerHTML = content;
 	});
 
+	describe('formula-bar', () => {
+		it('display collect value when click cells', () => {
+			const numCols = 8;
+			const numRows = 16;
+			const model = new TableModel(numCols, numRows);
+			model.setValue({row:2, col:3}, 123);
+			const view = new TableView(model);
+			view.init();
+
+			expect(document.querySelector('#formula-bar').value).toBe('');
+			let trs = document.querySelectorAll('tbody tr');
+			trs[2].cells[3].click();
+			expect(document.querySelector('#formula-bar').value).toBe('123');
+		});
+
+		it('sets collect value to cell', () => {
+			const numCols = 8;
+			const numRows = 16;
+			const model = new TableModel(numCols, numRows);
+			const view = new TableView(model);
+			view.init();
+
+			let trs = document.querySelectorAll('tbody tr');
+			expect(trs[2].cells[3].textContent).toBe('');
+			trs[2].cells[3].click();
+			document.querySelector('#formula-bar').value = '42';
+			view.handleFormulaBarChange();
+			trs = document.querySelectorAll('tbody tr');
+			expect(trs[2].cells[3].textContent).toBe('42');
+		});
+	});
 	describe('init', () => {
 		it('make th elements collectry', () => {
 			const numCols = 8;

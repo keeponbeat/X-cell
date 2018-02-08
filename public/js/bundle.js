@@ -96,10 +96,22 @@ class TableView {
 	initDomReferences(){
 		this.headerRowEl = document.querySelector('thead tr');
 		this.sheetBodyEl = document.querySelector('tbody');
+		this.formulaBarEl = document.querySelector('#formula-bar');
 	}
 
 	initCurrentCell() {
 		this.currentCellLocation = {row:0, col:0};
+		this.renderFormulaBar();
+	}
+
+	normalizeValue(val){
+		return val || '';
+	}
+
+	renderFormulaBar(){
+		const currentCellValue = this.model.getValue(this.currentCellLocation);
+		this.formulaBarEl.value = this.normalizeValue(currentCellValue);
+		this.formulaBarEl.focus();
 	}
 
 	renderTable(){
@@ -139,6 +151,7 @@ class TableView {
 
 	attachEventHandlers(){
 		this.sheetBodyEl.addEventListener('click', this.handleSheetClick.bind(this));
+		this.formulaBarEl.addEventListener('keyup', this.handleFormulaBarChange.bind(this));
 	}
 
 	handleSheetClick(evt){
@@ -146,6 +159,13 @@ class TableView {
 		const col = evt.target.cellIndex;
 		const row = evt.target.parentElement.rowIndex - 1;
 		this.currentCellLocation = {row:row, col:col};
+		this.renderTableBody();
+		this.renderFormulaBar();
+	}
+
+	handleFormulaBarChange(evt){
+		const val = this.formulaBarEl.value;
+		this.model.setValue(this.currentCellLocation, val);
 		this.renderTableBody();
 	}
 }
